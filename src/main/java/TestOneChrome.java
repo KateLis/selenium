@@ -17,8 +17,6 @@ public class TestOneChrome {
     }
     @Test
     public void myFirstTest(){
-        System.setProperty("webdriver.chrome.driver", "C:\\Chromedriver\\chromedriver_win32\\chromedriver.exe");
-        ChromeDriver driver = new ChromeDriver();
         driver.get("http:/www.google.com/");
         driver.findElement(By.name("q")).sendKeys("webdriver");
     }
