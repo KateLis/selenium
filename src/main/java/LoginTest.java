@@ -17,6 +17,15 @@ public class LoginTest {
     }
 
     @Test
+    public void ExistingUserLogin(){
+        driver.get("http://localhost:8090/litecart/admin/");
+        driver.findElement(By.name("username")).sendKeys("admin");
+        driver.findElement(By.name("password")).sendKeys("admin");
+        driver.findElement(By.name("remember_me")).click();
+        driver.findElement(By.name("login")).click();
+    }
+
+    @Test
     public void NonExistingUserLogin(){
         driver.get("http://localhost:8090/litecart/admin/");
         driver.findElement(By.name("username")).sendKeys("zakusova@eu.vi");
@@ -54,7 +63,7 @@ public class LoginTest {
     @Test
     public void LinkIsClickable(){
         driver.get("http://localhost:8090/litecart/admin/");
-        driver.findElement(By.cssSelector("img[src='litecart/images/logotype.png']")).click();
+        driver.findElement(By.cssSelector("img[src='/litecart/images/logotype.png']")).click();
     }
 
     @After
