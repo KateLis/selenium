@@ -14,8 +14,6 @@ import java.util.concurrent.TimeUnit;
 public class LabelTest{
     private WebDriver driver;
     private WebDriverWait wait;
-    private List<WebElement> els;
-    private List<WebElement> stickers;
     private List<WebElement> ducks;
     private List<WebElement> st;
 
@@ -28,11 +26,9 @@ public class LabelTest{
 
 
     @Test
-    public void findAllSmallDucks() throws InterruptedException, NoStickerOnDuckException {
+    public void findAllSmallDucks() throws NoStickerOnDuckException {
         driver.get("http:/localhost:8080/litecart/en/");
-        els = driver.findElements(By.cssSelector(".image"));
-        ducks = driver.findElements(By.cssSelector(".product.column.shadow.hover-light"));
-        WebElement sticker = driver.findElement(By.className("sticker"));
+        ducks = driver.findElements(By.cssSelector(".product"));
         System.out.println("There are " + ducks.size() + " ducks");
 
         for (WebElement element : ducks){
