@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
@@ -18,7 +19,7 @@ public class RegistrationTest {
 
     @Before
     public void start(){
-        driver = new ChromeDriver();
+        driver = new FirefoxDriver();
         wait = new WebDriverWait(driver,10);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
@@ -37,11 +38,13 @@ public class RegistrationTest {
                     .sendKeys(Keys.TAB)
                     .sendKeys(sampleText)
                     .perform();
-            Thread.sleep(500);
         }
-
-        Select dropList = new Select(driver.findElement(By.name("country_code")));
-        dropList.selectByVisibleText("United States");
+        driver.findElement(By.cssSelector(".select2-selection.select2-selection--single")).click();
+        driver.findElement(By.cssSelector(".select2-search__field")).sendKeys("united states");
+        new Actions(driver)
+                .sendKeys(Keys.ENTER)
+                .perform();
+        Thread.sleep(2000);
         driver.findElement(By.name("email")).sendKeys(email);
         driver.findElement(By.name("phone")).sendKeys(phone);
         driver.findElement(By.name("password")).sendKeys(sampleText);
