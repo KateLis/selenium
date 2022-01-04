@@ -16,10 +16,8 @@ public class InsideZonesSortedTest {
     private WebDriver driver;
     private WebDriverWait wait;
     private List<WebElement> preCountries;
-    private List<WebElement> zonesInside;
+
     private List<String> zonesNames;
-    private String abc;
-    private Exception NotSortedException;
     private List<WebElement> countriesWithManyZones;
     private List<String> links;
 
@@ -32,7 +30,7 @@ public class InsideZonesSortedTest {
     }
 
     @Test
-    public void getCountriesNames() throws NotSortedException, InterruptedException {
+    public void getCountriesNames() throws NotSortedException {
         driver.get("http://localhost:8090/litecart/admin/");
         driver.findElement(By.name("username")).sendKeys("admin");
         driver.findElement(By.name("password")).sendKeys("admin");
@@ -42,9 +40,7 @@ public class InsideZonesSortedTest {
         countriesWithManyZones = new ArrayList<>();
         links = new ArrayList<>();
         preCountries = driver.findElements(By.cssSelector(".row"));
-        zonesInside = new ArrayList<>();
         zonesNames = new ArrayList<>();
-        System.out.println(preCountries.size());
         for (WebElement row : preCountries) {
             if (Integer.parseInt(row.findElement(By.cssSelector("td:nth-child(6)")).getText()) > 0) {
                 countriesWithManyZones.add(row);
@@ -55,24 +51,23 @@ public class InsideZonesSortedTest {
         }
         for (String link : links) {
             driver.get(link);
-            zonesInside.addAll(driver.findElements(By.cssSelector(".header tr:nth-child(3)")));
-            for (WebElement zone : zonesInside) {
-                zonesNames.add(zone.getText());
+    //нужно искать заново все эл-ты, чтобы не было StaleException
+            for (int i = 0; i < (driver.findElements(By.cssSelector("#table-zones td:nth-child(3) input[type=hidden]"))).size(); i++) {
+                zonesNames.add((driver.findElements(By.cssSelector("#table-zones td:nth-child(3) input[type=hidden]"))).get(i).getText());
             }
+            System.out.println(zonesNames.size());
+
             List<String> sortedNames = zonesNames.stream()
                     .sorted()
                     .collect(Collectors.toList());
             if (zonesNames.equals(sortedNames)) {
                 driver.get("http://localhost:8090/litecart/admin/?app=countries&doc=countries");
-            }
-            else throw new NotSortedException("Zones are not sorted");
+            } else throw new NotSortedException("Zones are not sorted");
+
 
         }
 
-
     }
-
-
     @After
     public void stop() {
         driver.quit();
