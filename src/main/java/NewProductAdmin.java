@@ -27,7 +27,7 @@ public class NewProductAdmin {
     }
 
     @Test
-    public void getCountriesNames() throws InterruptedException, ProductNotAdded {
+    public void addNewProduct() throws InterruptedException, ProductNotAdded {
         name = "Japan dog";
         text = "This is a japanese cat that can be your best friend";
         driver.get("http://localhost:8090/litecart/admin/");
