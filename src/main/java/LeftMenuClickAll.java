@@ -1,11 +1,14 @@
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 public class LeftMenuClickAll {
@@ -30,6 +33,7 @@ public class LeftMenuClickAll {
 
         for(int i = 0; i<driver.findElements(By.cssSelector("#box-apps-menu li")).size(); i++){
             driver.findElements(By.cssSelector("#box-apps-menu li")).get(i).click();
+            Assert.assertTrue(isElementPresent(driver, By.tagName("h1")));
         }
 
     }
@@ -39,5 +43,13 @@ public class LeftMenuClickAll {
         driver.quit();
         driver = null;
     }
-
+    boolean isElementPresent(WebDriver driver, By locator) {
+        try {
+            //driver.findElement(locator);
+            wait.until((WebDriver d) -> d.findElement(locator));
+            return true;
+        } catch (NoSuchElementException ex) {
+            return false;
+        }
+    }
 }
