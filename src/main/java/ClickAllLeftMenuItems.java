@@ -20,7 +20,7 @@ public class ClickAllLeftMenuItems {
         // driver = new ChromeDriver();
         driver = new EdgeDriver();
         wait = new WebDriverWait(driver,10);
-    //    driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
     }
 
@@ -37,19 +37,10 @@ public class ClickAllLeftMenuItems {
         Assert.assertTrue(isElementPresent(driver, By.tagName("h1")));
         Thread.sleep(4000);
 
-//        WebElement template = driver.findElement(By.cssSelector("#doc-template"));
-//        template.click();
-//        doesItHaveTitle(template);
-//        Thread.sleep(4000);
-//
         WebElement logotype = driver.findElement(By.cssSelector("#doc-logotype")); //logotype
         logotype.click();
         doesItHaveTitle(logotype);
         Thread.sleep(4000);
-
-//        WebElement catalog = driver.findElement(By.cssSelector("#app- li:nth-child(2)"));
-//        catalog.click();
-//        doesItHaveTitle(catalog);
 
         WebElement catalog1 = driver.findElement(By.cssSelector("ul#box-apps-menu > li:nth-child(1)"));
         catalog1.click();
