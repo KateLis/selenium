@@ -18,7 +18,7 @@ public class GeoZonesSortedTest {
     private List<WebElement> preCountries;
 
     private List<String> zonesNames;
-    private List<WebElement> countriesWithManyZones;
+    private List<WebElement> zones;
     private List<String> links;
 
     @Before
@@ -26,7 +26,6 @@ public class GeoZonesSortedTest {
         driver = new ChromeDriver();
         wait = new WebDriverWait(driver, 10);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
     }
 
     @Test
@@ -37,7 +36,7 @@ public class GeoZonesSortedTest {
         driver.findElement(By.name("login")).click();
         driver.get("http://localhost:8090/litecart/admin/?app=geo_zones&doc=geo_zones");
         preCountries = new ArrayList<>();
-        countriesWithManyZones = new ArrayList<>();
+        zones = new ArrayList<>();
         links = new ArrayList<>();
         preCountries = driver.findElements(By.cssSelector(".row"));
         zonesNames = new ArrayList<>();
@@ -47,9 +46,11 @@ public class GeoZonesSortedTest {
         }
         for (String link : links) {
             driver.get(link);
-    //нужно искать заново все эл-ты, чтобы не было StaleException
-            for (int i = 0; i < (driver.findElements(By.cssSelector("#table-zones td:nth-child(3) select option[selected=selected]"))).size(); i++) {
-                zonesNames.add((driver.findElements(By.cssSelector("#table-zones td:nth-child(3) select option[selected=selected]"))).get(i).getText());
+            zonesNames = new ArrayList<>();
+            zones = driver.findElements(By.cssSelector("#table-zones td:nth-child(3) select option[selected=selected]"));
+
+            for (int i = 0; i < zones.size(); i++) {
+                zonesNames.add(zones.get(i).getText());
             }
             System.out.println(zonesNames.size());
 
@@ -59,15 +60,12 @@ public class GeoZonesSortedTest {
             if (zonesNames.equals(sortedNames)) {
                 driver.get("http://localhost:8090/litecart/admin/?app=countries&doc=countries");
             } else throw new NotSortedException("Zones are not sorted");
-
-
         }
-
     }
+
     @After
     public void stop() {
         driver.quit();
         driver = null;
     }
-
 }
