@@ -17,9 +17,11 @@ public class InsideZonesSortedTest {
     private WebDriverWait wait;
     private List<WebElement> preCountries;
 
-    private List<String> zonesNames;
+    List<String> zonesNames;
     private List<WebElement> countriesWithManyZones;
     private List<String> links;
+    List<WebElement> allRows;
+    List<WebElement> allNamesRows;
 
     @Before
     public void start() {
@@ -41,6 +43,8 @@ public class InsideZonesSortedTest {
         links = new ArrayList<>();
         preCountries = driver.findElements(By.cssSelector(".row"));
         zonesNames = new ArrayList<>();
+        allRows = new ArrayList<>();
+
         for (WebElement row : preCountries) {
             if (Integer.parseInt(row.findElement(By.cssSelector("td:nth-child(6)")).getText()) > 0) {
                 countriesWithManyZones.add(row);
@@ -51,11 +55,20 @@ public class InsideZonesSortedTest {
         }
         for (String link : links) {
             driver.get(link);
-    //нужно искать заново все эл-ты, чтобы не было StaleException
-            for (int i = 0; i < (driver.findElements(By.cssSelector("#table-zones td:nth-child(3) input[type=hidden]"))).size(); i++) {
-                zonesNames.add((driver.findElements(By.cssSelector("#table-zones td:nth-child(3) input[type=hidden]"))).get(i).getText());
+            WebElement emptyRow = driver.findElement(By.cssSelector("#table-zones tr:last-child"));
+            WebElement header = driver.findElement(By.cssSelector("#table-zones tr:first-child"));
+            allRows = driver.findElements(By.cssSelector("#table-zones tr"));
+
+            System.out.println(allRows.remove(emptyRow));
+            System.out.println(allRows.remove(header));
+
+            System.out.println("All rows: " + allRows.size());
+
+            allNamesRows = new ArrayList<>();
+            for (int i = 0; i < allRows.size(); i++) {
+                allNamesRows.add(allRows.get(i).findElement(By.cssSelector("td:nth-child(3)")));
+                allNamesRows.get(i).getText();
             }
-            System.out.println(zonesNames.size());
 
             List<String> sortedNames = zonesNames.stream()
                     .sorted()
@@ -63,11 +76,10 @@ public class InsideZonesSortedTest {
             if (zonesNames.equals(sortedNames)) {
                 driver.get("http://localhost:8090/litecart/admin/?app=countries&doc=countries");
             } else throw new NotSortedException("Zones are not sorted");
-
-
         }
 
     }
+
     @After
     public void stop() {
         driver.quit();
