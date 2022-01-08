@@ -16,7 +16,6 @@ public class GeoZonesSortedTest {
     private WebDriver driver;
     private WebDriverWait wait;
     private List<WebElement> preCountries;
-
     private List<String> zonesNames;
     private List<WebElement> zones;
     private List<String> links;
@@ -39,7 +38,6 @@ public class GeoZonesSortedTest {
         zones = new ArrayList<>();
         links = new ArrayList<>();
         preCountries = driver.findElements(By.cssSelector(".row"));
-        zonesNames = new ArrayList<>();
 
         for (WebElement country : preCountries) {
             links.add(country.findElement(By.cssSelector("a")).getAttribute("href"));
