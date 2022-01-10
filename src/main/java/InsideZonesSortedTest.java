@@ -41,9 +41,8 @@ public class InsideZonesSortedTest {
         preCountries = new ArrayList<>();
         countriesWithManyZones = new ArrayList<>();
         links = new ArrayList<>();
-        preCountries = driver.findElements(By.cssSelector(".row"));
-        zonesNames = new ArrayList<>();
-        allRows = new ArrayList<>();
+        preCountries = driver.findElements(By.cssSelector(".row"));;
+
 
         for (WebElement row : preCountries) {
             if (Integer.parseInt(row.findElement(By.cssSelector("td:nth-child(6)")).getText()) > 0) {
@@ -54,6 +53,9 @@ public class InsideZonesSortedTest {
             links.add(country.findElement(By.cssSelector("a")).getAttribute("href"));
         }
         for (String link : links) {
+            allRows = new ArrayList<>();
+            zonesNames = new ArrayList<>();
+            allNamesRows = new ArrayList<>();
             driver.get(link);
             WebElement emptyRow = driver.findElement(By.cssSelector("#table-zones tr:last-child"));
             WebElement header = driver.findElement(By.cssSelector("#table-zones tr:first-child"));
@@ -64,11 +66,12 @@ public class InsideZonesSortedTest {
 
             System.out.println("All rows: " + allRows.size());
 
-            allNamesRows = new ArrayList<>();
             for (int i = 0; i < allRows.size(); i++) {
                 allNamesRows.add(allRows.get(i).findElement(By.cssSelector("td:nth-child(3)")));
-                allNamesRows.get(i).getText();
+                zonesNames.add(allNamesRows.get(i).getText());
             }
+            System.out.println("All names: " + zonesNames.size());
+            System.out.println(zonesNames);
 
             List<String> sortedNames = zonesNames.stream()
                     .sorted()
