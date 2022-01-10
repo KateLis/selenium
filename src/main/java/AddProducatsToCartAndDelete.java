@@ -19,7 +19,7 @@ public class AddProducatsToCartAndDelete {
 
     @Before
     public void start() {
-        driver = new FirefoxDriver();
+        driver = new ChromeDriver();
         wait = new WebDriverWait(driver, 20);
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
@@ -54,7 +54,6 @@ public class AddProducatsToCartAndDelete {
             WebElement delete = driver.findElement(By.name("remove_cart_item"));
 
             driver.findElement(By.name("remove_cart_item")).click();
-            wait.until(ExpectedConditions.stalenessOf(table));
             wait.until(ExpectedConditions.stalenessOf(delete));
         }
 
