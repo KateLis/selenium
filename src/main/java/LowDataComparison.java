@@ -38,9 +38,13 @@ public class LowDataComparison {
         String regularPriceColor1 =  regularPrice.getCssValue("color");
         String campaignPriceColor1 = campaignPrice.getCssValue("color");
         String boldAttribute1 = campaignPrice.getAttribute("localName");
-        Dimension campaignPriceSize = campaignPrice.getSize();
-        Dimension regularPriceSize = regularPrice.getSize();
-        Assert.assertTrue(getElementSquare(campaignPriceSize) > getElementSquare(regularPriceSize));
+//        Dimension campaignPriceSize = campaignPrice.getSize();
+//        Dimension regularPriceSize = regularPrice.getSize();
+//        Assert.assertTrue(getElementSquare(campaignPriceSize) > getElementSquare(regularPriceSize));
+        float campaignSize1 = getFontSize(campaignPrice);
+        float regularSize1 = getFontSize(regularPrice);
+        Assert.assertTrue(campaignSize1 > regularSize1);
+        checkLineThrough(regularPrice);
 
         driver.findElement(By.cssSelector("#box-campaigns a")).click();
 
@@ -52,11 +56,17 @@ public class LowDataComparison {
         String regularPriceOnProductPageText = regularPriceOnProductPage.getText();
         String campaignPriceOnProductPageText = campaignPriceOnProductPage.getText();
 
-        Dimension campaignPriceSizeOnProductPage = campaignPriceOnProductPage.getSize();
-        Dimension regularPriceSizeOnProductPage = regularPriceOnProductPage.getSize();
-        Assert.assertTrue(
-                getElementSquare(campaignPriceSizeOnProductPage)
-                        > getElementSquare(regularPriceSizeOnProductPage));
+        float campaignSize2 = getFontSize(campaignPriceOnProductPage);
+        float regularSize2 = getFontSize(regularPriceOnProductPage);
+        Assert.assertTrue(campaignSize2 > regularSize2);
+        checkLineThrough(regularPriceOnProductPage);
+
+//        Dimension campaignPriceSizeOnProductPage = campaignPriceOnProductPage.getSize();
+//        Dimension regularPriceSizeOnProductPage = regularPriceOnProductPage.getSize();
+
+//        Assert.assertTrue(
+//                getElementSquare(campaignPriceSizeOnProductPage)
+//                        > getElementSquare(regularPriceSizeOnProductPage));
 
         Assert.assertTrue(productNameText.equals(productNameOnProductPageText));
         Assert.assertTrue(regularPriceText.equals(regularPriceOnProductPageText));
@@ -94,6 +104,19 @@ public class LowDataComparison {
         int a1 = dimension.getHeight();
         int b1 = dimension.getWidth();
         return a1*b1;
+    }
+    public float getFontSize(WebElement element){
+        String font = element.getCssValue("font-size");
+        String[] fontArr = font.split("px");
+        for(String str : fontArr){
+            System.out.println(str);
+        }
+        return Float.parseFloat(fontArr[0]);
+    }
+    public void checkLineThrough(WebElement element){
+        String ifLined = element.getCssValue("text-decoration");
+        System.out.println(ifLined);
+       Assert.assertTrue(ifLined.contains("line-through"));
     }
 }
 
